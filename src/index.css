@@ -1,68 +1,345 @@
+@import "tailwindcss";
+
+/* ============================================
+   THEME CONFIGURATION (Tailwind v4)
+   Replaces tailwind.config.js
+   ============================================ */
+@theme {
+  /* Colors - Primary (Indigo) */
+  --color-primary-50: oklch(0.97 0.01 264);
+  --color-primary-100: oklch(0.94 0.03 264);
+  --color-primary-200: oklch(0.87 0.06 264);
+  --color-primary-300: oklch(0.78 0.10 264);
+  --color-primary-400: oklch(0.68 0.15 264);
+  --color-primary-500: oklch(0.59 0.20 264);
+  --color-primary-600: oklch(0.52 0.22 264);
+  --color-primary-700: oklch(0.46 0.20 264);
+  --color-primary-800: oklch(0.39 0.17 264);
+  --color-primary-900: oklch(0.33 0.14 264);
+  --color-primary-950: oklch(0.25 0.11 264);
+
+  /* Fonts */
+  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  
+  /* Custom Spacing */
+  --spacing-18: 4.5rem;
+  --spacing-88: 22rem;
+  
+  /* Custom Border Radius */
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
+
+  /* Custom Shadows */
+  --shadow-soft: 0 2px 8px -2px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+  --shadow-card: 0 4px 12px -4px rgba(0, 0, 0, 0.1), 0 2px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-modal: 0 20px 40px -8px rgba(0, 0, 0, 0.2), 0 8px 16px -4px rgba(0, 0, 0, 0.1);
+
+  /* Animations */
+  --animate-fade-in: fade-in 0.2s ease-out;
+  --animate-slide-up: slide-up 0.3s ease-out;
+  --animate-slide-in-left: slide-in-left 0.3s ease-out;
+  --animate-spin-slow: spin 1s linear infinite;
+
+  /* Easing */
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ============================================
+   KEYFRAME ANIMATIONS
+   ============================================ */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ============================================
+   BASE LAYER
+   ============================================ */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-slate-50);
+    color: var(--color-slate-800);
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-slate-100);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-slate-400);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-slate-500);
+  }
+
+  /* Focus styles */
+  *:focus-visible {
+    outline: 2px solid var(--color-primary-500);
+    outline-offset: 2px;
+  }
+}
+
+/* ============================================
+   COMPONENT LAYER
+   ============================================ */
+@layer components {
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    border-radius: var(--radius-lg);
+    transition: all 0.2s var(--ease-smooth);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn-primary {
+    background-color: var(--color-primary-500);
+    color: white;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background-color: var(--color-primary-600);
+    box-shadow: var(--shadow-card);
+    transform: translateY(-1px);
+  }
+
+  .btn-primary:active:not(:disabled) {
+    background-color: var(--color-primary-700);
+    transform: translateY(0);
+  }
+
+  .btn-secondary {
+    background-color: var(--color-slate-100);
+    color: var(--color-slate-700);
+  }
+
+  .btn-secondary:hover:not(:disabled) {
+    background-color: var(--color-slate-200);
+  }
+
+  .btn-danger {
+    background-color: var(--color-red-500);
+    color: white;
+  }
+
+  .btn-danger:hover:not(:disabled) {
+    background-color: var(--color-red-600);
+  }
+
+  .btn-ghost {
+    background-color: transparent;
+    color: var(--color-slate-600);
+  }
+
+  .btn-ghost:hover:not(:disabled) {
+    background-color: var(--color-slate-100);
+    color: var(--color-slate-800);
+  }
+
+  .btn-icon {
+    padding: 0.5rem;
+    border-radius: var(--radius-lg);
+  }
+
+  /* Form Inputs */
+  .input {
+    width: 100%;
+    padding: 0.625rem 1rem;
+    background-color: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    color: var(--color-slate-800);
+    font-size: 0.9375rem;
+    transition: all 0.2s var(--ease-smooth);
+  }
+
+  .input::placeholder {
+    color: var(--color-slate-400);
+  }
+
+  .input:focus {
+    outline: none;
+    border-color: var(--color-primary-500);
+    box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-primary-500) 20%, transparent);
+  }
+
+  .input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .input-error {
+    border-color: var(--color-red-500);
+  }
+
+  .input-error:focus {
+    box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-red-500) 20%, transparent);
+  }
+
+  /* Cards */
+  .card {
+    background-color: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-xl);
+    padding: 1.25rem;
+    transition: all 0.2s var(--ease-smooth);
+  }
+
+  .card:hover {
+    box-shadow: var(--shadow-card);
+    border-color: var(--color-primary-200);
+  }
+
+  /* Tags */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.625rem;
+    background-color: var(--color-slate-100);
+    color: var(--color-slate-600);
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: all 0.2s var(--ease-smooth);
+  }
+
+  .tag:hover {
+    background-color: var(--color-primary-100);
+    color: var(--color-primary-700);
+  }
+
+  .tag-active {
+    background-color: var(--color-primary-500);
+    color: white;
+  }
+
+  .tag-active:hover {
+    background-color: var(--color-primary-600);
+    color: white;
+  }
+}
+
+/* ============================================
+   CUSTOM UTILITIES
+   ============================================ */
+@utility spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid var(--color-slate-200);
+  border-top-color: var(--color-primary-500);
+  border-radius: 9999px;
+  animation: spin 0.8s linear infinite;
+}
+
+@utility spinner-sm {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid color-mix(in oklch, white 30%, transparent);
+  border-top-color: white;
+  border-radius: 9999px;
+  animation: spin 0.8s linear infinite;
+}
+
+@utility animate-fade-in {
+  animation: var(--animate-fade-in);
+}
+
+@utility animate-slide-up {
+  animation: var(--animate-slide-up);
+}
+
+@utility animate-slide-in-left {
+  animation: var(--animate-slide-in-left);
+}
+
+/* Scrollbar hidden utility */
+@utility scrollbar-hidden {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ============================================
+   REACT TOASTIFY CUSTOM STYLES
+   ============================================ */
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --toastify-color-light: white;
+  --toastify-color-dark: var(--color-slate-800);
+  --toastify-color-info: var(--color-primary-500);
+  --toastify-color-success: var(--color-green-500);
+  --toastify-color-warning: var(--color-amber-500);
+  --toastify-color-error: var(--color-red-500);
+  --toastify-font-family: var(--font-sans);
+  --toastify-toast-min-height: 56px;
+  --toastify-toast-bd-radius: 12px;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+.Toastify__toast {
+  border-radius: 12px !important;
+  font-family: var(--font-sans) !important;
+  font-size: 0.875rem !important;
+  box-shadow: var(--shadow-card) !important;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+.Toastify__toast-body {
+  padding: 0.5rem 0 !important;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.Toastify__progress-bar {
+  height: 3px !important;
 }
