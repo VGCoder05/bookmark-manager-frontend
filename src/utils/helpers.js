@@ -52,7 +52,10 @@ export const isValidUrl = (url) => {
 export const extractDomain = (url) => {
   try {
     const urlObj = new URL(url.startsWith('http') ? url : `https://${url}`);
-    return urlObj.hostname.replace('www.', '');
+    // console.log("from extractDomain func - url : ", url)
+    // console.log("from extractDomain func - urlObj ", urlObj)
+    // console.log("from extractDomain func - output ",  urlObj.hostname.replace('www.', ''))
+    return {href: urlObj.href, domain: urlObj.hostname.replace('www.', '')};
   } catch {
     return url;
   }
@@ -62,7 +65,7 @@ export const extractDomain = (url) => {
  * Generate favicon URL from domain
  */
 export const getFaviconUrl = (url) => {
-  const domain = extractDomain(url);
+  const domain = extractDomain(url).domain;
   return `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
 };
 

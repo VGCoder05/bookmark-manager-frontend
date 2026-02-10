@@ -110,7 +110,7 @@ const BookmarkForm = ({ isOpen, onClose, editBookmark = null }) => {
       onClick={handleClose}
     >
       <div
-        className="w-full max-w-lg bg-white rounded-2xl shadow-xl overflow-hidden animate-slide-up"
+        className="w-full max-w-lg  max-h-[100dvh] bg-white rounded-2xl shadow-xl overflow-hidden animate-slide-up flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -127,113 +127,115 @@ const BookmarkForm = ({ isOpen, onClose, editBookmark = null }) => {
           </button>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-5">
-          {/* URL Field */}
-          <div>
-            <label htmlFor="url" className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-1.5">
-              <FiLink className="text-slate-400" />
-              URL <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="url"
-              name="url"
-              className={`input ${errors.url ? 'input-error' : ''}`}
-              placeholder="https://example.com"
-              value={formData.url}
-              onChange={handleChange}
-              disabled={isSubmitting}
-            />
-            {errors.url && <p className="mt-1 text-sm text-red-500">{errors.url}</p>}
-          </div>
+        <div className="overflow-y-auto flex-1">
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="p-6 space-y-5">
+            {/* URL Field */}
+            <div>
+              <label htmlFor="url" className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-1.5">
+                <FiLink className="text-slate-400" />
+                URL <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                id="url"
+                name="url"
+                className={`input ${errors.url ? 'input-error' : ''}`}
+                placeholder="https://example.com"
+                value={formData.url}
+                onChange={handleChange}
+                disabled={isSubmitting}
+              />
+              {errors.url && <p className="mt-1 text-sm text-red-500">{errors.url}</p>}
+            </div>
 
-          {/* Name Field */}
-          <div>
-            <label htmlFor="name" className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-1.5">
-              <FiBookmark className="text-slate-400" />
-              Name <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              className={`input ${errors.name ? 'input-error' : ''}`}
-              placeholder="My Awesome Website"
-              value={formData.name}
-              onChange={handleChange}
-              disabled={isSubmitting}
-            />
-            {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name}</p>}
-          </div>
+            {/* Name Field */}
+            <div>
+              <label htmlFor="name" className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-1.5">
+                <FiBookmark className="text-slate-400" />
+                Name <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                className={`input ${errors.name ? 'input-error' : ''}`}
+                placeholder="My Awesome Website"
+                value={formData.name}
+                onChange={handleChange}
+                disabled={isSubmitting}
+              />
+              {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name}</p>}
+            </div>
 
-          {/* Description Field */}
-          <div>
-            <label htmlFor="description" className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-1.5">
-              <FiFileText className="text-slate-400" />
-              Description <span className="text-slate-400 font-normal">(optional)</span>
-            </label>
-            <textarea
-              id="description"
-              name="description"
-              rows={3}
-              className={`input resize-none ${errors.description ? 'input-error' : ''}`}
-              placeholder="Brief description of this bookmark..."
-              value={formData.description}
-              onChange={handleChange}
-              disabled={isSubmitting}
-            />
-            {errors.description && <p className="mt-1 text-sm text-red-500">{errors.description}</p>}
-            <p className="mt-1 text-xs text-slate-400">{formData.description.length}/500 characters</p>
-          </div>
+            {/* Description Field */}
+            <div>
+              <label htmlFor="description" className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-1.5">
+                <FiFileText className="text-slate-400" />
+                Description <span className="text-slate-400 font-normal">(optional)</span>
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                rows={3}
+                className={`input resize-none ${errors.description ? 'input-error' : ''}`}
+                placeholder="Brief description of this bookmark..."
+                value={formData.description}
+                onChange={handleChange}
+                disabled={isSubmitting}
+              />
+              {errors.description && <p className="mt-1 text-sm text-red-500">{errors.description}</p>}
+              <p className="mt-1 text-xs text-slate-400">{formData.description.length}/500 characters</p>
+            </div>
 
-          {/* Tags Field */}
-          <div>
-            <label htmlFor="tags" className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-1.5">
-              <FiTag className="text-slate-400" />
-              Tags <span className="text-slate-400 font-normal">(optional)</span>
-            </label>
-            <input
-              type="text"
-              id="tags"
-              name="tags"
-              className="input"
-              placeholder="react, javascript, tutorial"
-              value={formData.tags}
-              onChange={handleChange}
-              disabled={isSubmitting}
-            />
-            <p className="mt-1 text-xs text-slate-400">Separate tags with commas</p>
-          </div>
+            {/* Tags Field */}
+            <div>
+              <label htmlFor="tags" className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-1.5">
+                <FiTag className="text-slate-400" />
+                Tags <span className="text-slate-400 font-normal">(optional)</span>
+              </label>
+              <input
+                type="text"
+                id="tags"
+                name="tags"
+                className="input"
+                placeholder="react, javascript, tutorial"
+                value={formData.tags}
+                onChange={handleChange}
+                disabled={isSubmitting}
+              />
+              <p className="mt-1 text-xs text-slate-400">Separate tags with commas</p>
+            </div>
 
-          {/* Actions */}
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
-            <button
-              type="button"
-              onClick={handleClose}
-              disabled={isSubmitting}
-              className="btn btn-secondary"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="btn btn-primary min-w-[140px]"
-            >
-              {isSubmitting ? (
-                <>
-                  <span className="spinner-sm" />
-                  {editBookmark ? 'Updating...' : 'Adding...'}
-                </>
-              ) : editBookmark ? (
-                'Update Bookmark'
-              ) : (
-                'Add Bookmark'
-              )}
-            </button>
-          </div>
-        </form>
+            {/* Actions */}
+            <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
+              <button
+                type="button"
+                onClick={handleClose}
+                disabled={isSubmitting}
+                className="btn btn-secondary"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="btn btn-primary min-w-[140px]"
+              >
+                {isSubmitting ? (
+                  <>
+                    <span className="spinner-sm" />
+                    {editBookmark ? 'Updating...' : 'Adding...'}
+                  </>
+                ) : editBookmark ? (
+                  'Update Bookmark'
+                ) : (
+                  'Add Bookmark'
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

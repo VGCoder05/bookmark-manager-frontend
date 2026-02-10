@@ -36,7 +36,7 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen max-w-7xl mx-auto bg-slate-50">
       {/* Navbar */}
       <Navbar
         onAddClick={handleAddClick}

@@ -17,6 +17,9 @@ const BookmarkCard = ({ bookmark, onEdit }) => {
 
   const { _id, url, name, description, tags, isFavorite, createdAt, favicon } = bookmark;
 
+  console.log("url : ", url);
+
+
   // Handle delete
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this bookmark?')) {
@@ -46,9 +49,10 @@ const BookmarkCard = ({ bookmark, onEdit }) => {
   const faviconUrl = favicon || getFaviconUrl(url);
 
   return (
-    <article className="card group">
+    <article className="card group cursor-pointer relative flex flex-col justify-between">
       {/* Header */}
-      <div className="flex items-start gap-3 mb-3">
+      <div className="flex justify-between items-start gap-3 mb-3">
+
         {/* Favicon */}
         <div className="shrink-0 w-10 h-10 rounded-lg overflow-hidden bg-slate-100">
           <img
@@ -63,36 +67,46 @@ const BookmarkCard = ({ bookmark, onEdit }) => {
 
         {/* Info */}
         <div className="flex-1 min-w-0">
-          <a
-            href={url}
+          {/* <a
+            href={extractDomain(url).href}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 font-semibold text-slate-800 
-                       hover:text-primary-600 transition-colors group/link"
+            className='h-[100%] flex flex-col justify-between '
+          >
+          </a> */}
+
+          <a
+            href={extractDomain(url).href}
+            target="_blank"
+            rel="noopener noreferrer"
+            // className="inline-flex items-center gap-1.5 font-semibold text-slate-800 
+            //            group-hover:text-primary-600 transition-colors "
+             className="inline-flex items-center gap-1.5 font-semibold text-slate-800 
+                       group-hover:text-primary-600 transition-colors
+                       after:absolute after:inset-0 after:content-['']"
           >
             <span className="truncate">{name}</span>
-            <FiExternalLink className="shrink-0 text-sm opacity-0 group-hover/link:opacity-100 transition-opacity" />
+            <FiExternalLink className="shrink-0 text-sm opacity-0 group-hover:opacity-100 transition-opacity" />
           </a>
-          <p className="text-sm text-slate-400 truncate">{extractDomain(url)}</p>
+          <p className="text-sm text-slate-400 truncate">{extractDomain(url).domain}</p>
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 z-10">
           {/* Favorite button */}
           <button
             onClick={handleFavorite}
-            className={`p-2 rounded-lg transition-colors ${
-              isFavorite
-                ? 'text-amber-500 hover:bg-amber-50'
-                : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100'
-            }`}
+            className={`p-2 rounded-lg transition-colors ${isFavorite
+              ? 'text-amber-500 hover:bg-amber-50'
+              : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100'
+              }`}
             aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
           >
             <FiStar className={isFavorite ? 'fill-current' : ''} />
           </button>
 
           {/* More options dropdown */}
-          <div className="relative">
+          <div className="relative ">
             <button
               onClick={() => setShowMenu(!showMenu)}
               className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
@@ -168,6 +182,7 @@ const BookmarkCard = ({ bookmark, onEdit }) => {
       <div className="pt-3 border-t border-slate-100">
         <span className="text-xs text-slate-400">{formatRelativeTime(createdAt)}</span>
       </div>
+
     </article>
   );
 };
