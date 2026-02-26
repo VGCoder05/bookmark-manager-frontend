@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
+  FiInfo,
   FiStar,
   FiEdit2,
   FiTrash2,
@@ -12,13 +13,30 @@ import { formatRelativeTime, getFaviconUrl, truncateText, extractDomain } from '
 import showToast from '../utils/toast';
 
 const BookmarkCard = ({ bookmark, onEdit }) => {
-  const [showMenu, setShowMenu] = useState(false);
+  const [showMenu, setShowMenu] = useState(false); // menu state
+  const [showTooltip, setShowTooltip] = useState(false); // Tooltip State
+  const tooltipRef = useRef(null); // ref to close when tapping outside
+
   const { deleteBookmark, toggleFavorite } = useBookmarks();
 
   const { _id, url, name, description, tags, isFavorite, createdAt, favicon } = bookmark;
 
-  console.log("url : ", url);
+  // console.log("url : ", url);
 
+  // To Close tooltip when clicking outside of it
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (tooltipRef.current && !tooltipRef.current.contains(event.target)) {
+        setShowTooltip(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, []);
 
   // Handle delete
   const handleDelete = async () => {
@@ -66,35 +84,52 @@ const BookmarkCard = ({ bookmark, onEdit }) => {
         </div>
 
         {/* Info */}
-        <div className="flex-1 min-w-0">
-          {/* <a
-            href={extractDomain(url).href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className='h-[100%] flex flex-col justify-between '
-          >
-          </a> */}
+        <div className="flex-1 min-w-0 flex items-start gap-2">
 
           <a
             href={extractDomain(url).href}
             target="_blank"
             rel="noopener noreferrer"
-            className=" relative w-[100%] inline-flex items-start gap-1.5 font-semibold text-slate-800 
+            className=" relative w-full inline-flex items-start gap-1.5 font-semibold text-slate-800 
              group-hover:text-primary-600 transition-colors"
           >
             <span className="line-clamp-2 leading-tight break-words" style={{ wordBreak: 'break-word' }}>
               {name}
             </span>
-            <FiExternalLink className="shrink-0 text-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+            <FiExternalLink className="shrink-0 text-sm opacity-0 group-hover:opacity-100 transition-opacity mt-1" />
+
 
             {/* Custom Tooltip that shows on hover */}
-            <div className="absolute top-full left-0 mb-2 hidden group-hover/title:block w-max max-w-[250px] whitespace-normal bg-slate-800 text-white text-xs font-normal rounded py-1.5 px-2.5 z-50 shadow-xl">
+            {/* <div className="absolute top-full left-0 mb-2 hidden group-hover/title:block w-max max-w-[250px] whitespace-normal bg-slate-800 text-white text-xs font-normal rounded py-1.5 px-2.5 z-50 shadow-xl">
               {name}
               <div className="absolute bottom-full left-4 -mt-px border-4 border-transparent border-b-slate-800"></div>
-            </div>
+            </div> */}
 
           </a>
           <p className="text-sm text-slate-400 truncate">{extractDomain(url).domain}</p>
+
+          {/* 4. Mobile Info Toggle Button & Tooltip Wrapper */}
+          <div className="relative shrink-0 sm:hidden" ref={tooltipRef}>
+            <button
+              onClick={(e) => {
+                e.preventDefault(); // Prevent accidental navigation
+                e.stopPropagation(); // Prevent triggering parent clicks
+                setShowTooltip(!showTooltip);
+              }}
+              className="text-slate-400 p-1 hover:text-slate-600"
+            >
+              <FiInfo size={16} />
+            </button>
+
+            {/* 5. The Tooltip (Controlled by hover on Desktop, State on Mobile) */}
+            <div className={`absolute right-0 top-full mt-2 w-max max-w-[200px] whitespace-normal bg-slate-800 text-white text-xs font-normal rounded py-1.5 px-2.5 z-50 shadow-xl
+              ${showTooltip ? 'block' : 'hidden'} md:hidden`}
+            >
+              {name}
+              <div className="absolute bottom-full right-2 -mt-px border-4 border-transparent border-b-slate-800"></div>
+            </div>
+          </div>
+
         </div>
 
         {/* Actions */}
