@@ -83,52 +83,60 @@ const BookmarkCard = ({ bookmark, onEdit }) => {
           />
         </div>
 
-        {/* Info */}
-        <div className="flex-1 min-w-0 flex items-start gap-2">
+        {/* Info Container */}
+        <div className="flex-1 min-w-0 relative">
 
+          {/* Title Link */}
           <a
             href={extractDomain(url).href}
             target="_blank"
             rel="noopener noreferrer"
-            className=" relative w-full inline-flex items-start gap-1.5 font-semibold text-slate-800 
-             group-hover:text-primary-600 transition-colors"
+            className="relative w-full inline-flex items-start gap-1.5 font-semibold text-slate-800 group-hover:text-primary-600 transition-colors"
           >
             <span className="line-clamp-2 leading-tight break-words" style={{ wordBreak: 'break-word' }}>
               {name}
             </span>
             <FiExternalLink className="shrink-0 text-sm opacity-0 group-hover:opacity-100 transition-opacity mt-1" />
 
-
-            {/* Custom Tooltip that shows on hover */}
-            {/* <div className="absolute top-full left-0 mb-2 hidden group-hover/title:block w-max max-w-[250px] whitespace-normal bg-slate-800 text-white text-xs font-normal rounded py-1.5 px-2.5 z-50 shadow-xl">
+            {/* Desktop Tooltip (Shows on hover of the title) */}
+            <div className="hidden md:block absolute top-full left-0 mb-2 invisible opacity-0 group-hover/title:visible group-hover/title:opacity-100 transition-all duration-200 w-max max-w-[250px] whitespace-normal bg-slate-800 text-white text-xs font-normal rounded py-1.5 px-2.5 z-50 shadow-xl">
               {name}
-              <div className="absolute bottom-full left-4 -mt-px border-4 border-transparent border-b-slate-800"></div>
-            </div> */}
-
-          </a>
-          <p className="text-sm text-slate-400 truncate">{extractDomain(url).domain}</p>
-
-          {/* 4. Mobile Info Toggle Button & Tooltip Wrapper */}
-          <div className="relative shrink-0 sm:hidden" ref={tooltipRef}>
-            <button
-              onClick={(e) => {
-                e.preventDefault(); // Prevent accidental navigation
-                e.stopPropagation(); // Prevent triggering parent clicks
-                setShowTooltip(!showTooltip);
-              }}
-              className="text-slate-400 p-1 hover:text-slate-600"
-            >
-              <FiInfo size={16} />
-            </button>
-
-            {/* 5. The Tooltip (Controlled by hover on Desktop, State on Mobile) */}
-            <div className={`absolute right-0 top-full mt-2 w-max max-w-[200px] whitespace-normal bg-slate-800 text-white text-xs font-normal rounded py-1.5 px-2.5 z-50 shadow-xl
-              ${showTooltip ? 'block' : 'hidden'} md:hidden`}
-            >
-              {name}
-              <div className="absolute bottom-full right-2 -mt-px border-4 border-transparent border-b-slate-800"></div>
+              {/* Arrow pointing */}
+              <div className="absolute bottom-full left-4 border-4 border-transparent border-b-slate-800"></div>
             </div>
+          </a>
+
+          <p className="text-sm text-slate-400 truncate mt-0.5">{extractDomain(url).domain}</p>
+
+          {/* Mobile Tooltip (Controlled by your showTooltip state) */}
+          <div
+            className={`absolute left-0 top-full mt-2 w-max max-w-[250px] whitespace-normal bg-slate-800 text-white text-xs font-normal rounded py-1.5 px-2.5 z-50 shadow-xl transition-all duration-200 md:hidden
+      ${showTooltip ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+          >
+            {name}
+            {/* Arrow pointing */}
+            <div className="absolute bottom-full left-4 border-4 border-transparent border-b-slate-800"></div>
           </div>
+
+        </div>
+
+        {/* 4. Mobile Info Toggle Button & Tooltip Wrapper */}
+        <div className="relative shrink-0 sm:hidden" ref={tooltipRef}>
+          <button
+            onClick={(e) => {
+              e.preventDefault(); // Prevent accidental navigation
+              e.stopPropagation(); // Prevent triggering parent clicks
+              setShowTooltip(!showTooltip);
+            }}
+            onMouseLeave={(e) => {
+              e.preventDefault(); // Prevent accidental navigation
+              e.stopPropagation(); // Prevent triggering parent clicks
+              setShowTooltip(false);
+            }}
+            className="text-slate-400 p-1 hover:text-slate-600"
+          >
+            <FiInfo size={16} />
+          </button>
 
         </div>
 
@@ -199,32 +207,36 @@ const BookmarkCard = ({ bookmark, onEdit }) => {
       </div>
 
       {/* Description */}
-      {description && (
-        <p className="text-sm text-slate-500 leading-relaxed mb-3">
-          {truncateText(description, 120)}
-        </p>
-      )}
+      {
+        description && (
+          <p className="text-sm text-slate-500 leading-relaxed mb-3">
+            {truncateText(description, 120)}
+          </p>
+        )
+      }
 
       {/* Tags */}
-      {tags && tags.length > 0 && (
-        <div className="flex flex-wrap gap-1.5 mb-3">
-          {tags.map((tag) => (
-            <span
-              key={tag}
-              className="px-2 py-0.5 bg-slate-100 text-slate-500 rounded-full text-xs font-medium"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-      )}
+      {
+        tags && tags.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mb-3">
+            {tags.map((tag) => (
+              <span
+                key={tag}
+                className="px-2 py-0.5 bg-slate-100 text-slate-500 rounded-full text-xs font-medium"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )
+      }
 
       {/* Footer */}
       <div className="pt-3 border-t border-slate-100">
         <span className="text-xs text-slate-400">{formatRelativeTime(createdAt)}</span>
       </div>
 
-    </article>
+    </article >
   );
 };
 
