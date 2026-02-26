@@ -49,7 +49,7 @@ const BookmarkCard = ({ bookmark, onEdit }) => {
   const faviconUrl = favicon || getFaviconUrl(url);
 
   return (
-    <article className="card group cursor-pointer relative flex flex-col justify-between">
+    <article className="card group group/title cursor-pointer relative flex flex-col justify-between">
       {/* Header */}
       <div className="flex justify-between items-start gap-3 mb-3">
 
@@ -79,14 +79,20 @@ const BookmarkCard = ({ bookmark, onEdit }) => {
             href={extractDomain(url).href}
             target="_blank"
             rel="noopener noreferrer"
-            // className="inline-flex items-center gap-1.5 font-semibold text-slate-800 
-            //            group-hover:text-primary-600 transition-colors "
-             className="inline-flex items-center gap-1.5 font-semibold text-slate-800 
-                       group-hover:text-primary-600 transition-colors
-                       after:absolute after:inset-0 after:content-['']"
+            className=" relative w-[100%] inline-flex items-start gap-1.5 font-semibold text-slate-800 
+             group-hover:text-primary-600 transition-colors"
           >
-            <span className="truncate">{name}</span>
+            <span className="line-clamp-2 leading-tight break-words" style={{ wordBreak: 'break-word' }}>
+              {name}
+            </span>
             <FiExternalLink className="shrink-0 text-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+
+            {/* Custom Tooltip that shows on hover */}
+            <div className="absolute top-full left-0 mb-2 hidden group-hover/title:block w-max max-w-[250px] whitespace-normal bg-slate-800 text-white text-xs font-normal rounded py-1.5 px-2.5 z-50 shadow-xl">
+              {name}
+              <div className="absolute bottom-full left-4 -mt-px border-4 border-transparent border-b-slate-800"></div>
+            </div>
+
           </a>
           <p className="text-sm text-slate-400 truncate">{extractDomain(url).domain}</p>
         </div>
