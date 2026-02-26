@@ -111,7 +111,7 @@ const BookmarkCard = ({ bookmark, onEdit }) => {
           {/* Mobile Tooltip (Controlled by your showTooltip state) */}
           <div
             className={`absolute left-0 top-full mt-2 w-max max-w-[250px] whitespace-normal bg-slate-800 text-white text-xs font-normal rounded py-1.5 px-2.5 z-50 shadow-xl transition-all duration-200 md:hidden
-      ${showTooltip ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+            ${showTooltip ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
           >
             {name}
             {/* Arrow pointing */}
@@ -120,7 +120,22 @@ const BookmarkCard = ({ bookmark, onEdit }) => {
 
         </div>
 
-        {/* 4. Mobile Info Toggle Button & Tooltip Wrapper */}
+
+        {/* Actions */}
+        <div className="flex items-center gap-[.3rem] z-10">
+          {/* Favorite button */}
+          <button
+            onClick={handleFavorite}
+            className={`p-2 rounded-lg transition-colors ${isFavorite
+              ? 'text-amber-500 hover:bg-amber-50'
+              : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100'
+              }`}
+            aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+          >
+            <FiStar className={isFavorite ? 'fill-current' : ''} />
+          </button>
+
+        {/*  Mobile Info Toggle Button & Tooltip Wrapper */}
         <div className="relative shrink-0 sm:hidden" ref={tooltipRef}>
           <button
             onClick={(e) => {
@@ -139,20 +154,6 @@ const BookmarkCard = ({ bookmark, onEdit }) => {
           </button>
 
         </div>
-
-        {/* Actions */}
-        <div className="flex items-center gap-1 z-10">
-          {/* Favorite button */}
-          <button
-            onClick={handleFavorite}
-            className={`p-2 rounded-lg transition-colors ${isFavorite
-              ? 'text-amber-500 hover:bg-amber-50'
-              : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100'
-              }`}
-            aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
-          >
-            <FiStar className={isFavorite ? 'fill-current' : ''} />
-          </button>
 
           {/* More options dropdown */}
           <div className="relative ">
